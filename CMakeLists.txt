@@ -21,23 +21,23 @@ endif()
 message(STATUS "CMAKE_CXX_STANDARD: ${CXX_LATEST_STANDARD}")
 
 # opennurbs source
-file(GLOB opennurbs_SOURCE "${CMAKE_SOURCE_DIR}/*.h"
-     "${CMAKE_SOURCE_DIR}/*.cpp")
+file(GLOB opennurbs_SOURCE "${PROJECT_SOURCE_DIR}/*.h"
+     "${PROJECT_SOURCE_DIR}/*.cpp")
 # exclude the examples
-list(FILTER opennurbs_SOURCE EXCLUDE REGEX "${CMAKE_SOURCE_DIR}/example*")
+list(FILTER opennurbs_SOURCE EXCLUDE REGEX "${PROJECT_SOURCE_DIR}/example*")
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
   list(REMOVE_ITEM opennurbs_SOURCE
-       "${CMAKE_SOURCE_DIR}/opennurbs_unicode_cp932.cpp")
+       "${PROJECT_SOURCE_DIR}/opennurbs_unicode_cp932.cpp")
   list(REMOVE_ITEM opennurbs_SOURCE
-       "${CMAKE_SOURCE_DIR}/opennurbs_unicode_cp949.cpp")
+       "${PROJECT_SOURCE_DIR}/opennurbs_unicode_cp949.cpp")
 endif()
 
 # remove opennurbs_gl if no opengl
 find_package(OpenGL)
 if(NOT ${OPENGL_FOUND})
   message(WARNING "OpenGL not found. Excluding opennurbs_gl")
-  list(REMOVE_ITEM opennurbs_SOURCE "${CMAKE_SOURCE_DIR}/opennurbs_gl.cpp")
+  list(REMOVE_ITEM opennurbs_SOURCE "${PROJECT_SOURCE_DIR}/opennurbs_gl.cpp")
 endif()
 
 # Build the opennurbs library
@@ -66,10 +66,10 @@ else()
     if(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL
                                              "Android")
       # Include UUID source (bundled with opennurbs)
-      file(GLOB UUID_SRC "${CMAKE_SOURCE_DIR}/android_uuid/*.h"
-           "${CMAKE_SOURCE_DIR}/android_uuid/*.c")
+      file(GLOB UUID_SRC "${PROJECT_SOURCE_DIR}/android_uuid/*.h"
+           "${PROJECT_SOURCE_DIR}/android_uuid/*.c")
       list(REMOVE_ITEM UUID_SRC
-           "${CMAKE_SOURCE_DIR}/android_uuid/gen_uuid_nt.c")
+           "${PROJECT_SOURCE_DIR}/android_uuid/gen_uuid_nt.c")
     endif()
 
     # Need to combine all source files for static linking on non-windows
@@ -122,8 +122,8 @@ if(${OPENNURBS_EXTERNAL_ZLIB} OR ${OPENNURBS_ZLIB_LIB_DIR})
     opennurbs PRIVATE OPENNURBS_ZLIB_LIB_DIR="${OPENNURBS_ZLIB_LIB_DIR}")
 else()
   # build zlib (bundled with opennurbs)
-  file(GLOB ZLIB_SOURCE "${CMAKE_SOURCE_DIR}/zlib/*.h"
-       "${CMAKE_SOURCE_DIR}/zlib/*.c")
+  file(GLOB ZLIB_SOURCE "${PROJECT_SOURCE_DIR}/zlib/*.h"
+       "${PROJECT_SOURCE_DIR}/zlib/*.c")
   add_library(zlib ${ZLIB_SOURCE})
   target_compile_definitions(zlib PRIVATE MY_ZCALLOC Z_PREFIX)
   set_target_properties(
