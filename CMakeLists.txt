@@ -209,6 +209,10 @@ if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
   # TODO fix this
   message(WARNING "Suppressing -Wdefaulted-function-deleted for opennurbs")
   target_compile_options(opennurbs PRIVATE -Wno-defaulted-function-deleted)
+else()
+  if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    target_compile_options(opennurbs PRIVATE "/MP")
+  endif()
 endif()
 
 # Set the outputs of opennurbs CMake
